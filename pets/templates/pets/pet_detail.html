@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>VetCareAI - Pet Profile</title>
+</head>
+
+<body>
+    <h1>VetCareAI 🐾</h1>
+    <h2>{{ pet.name }}'s Profile</h2>
+    {% if pet.photo %}
+        <img
+            src = "{{ pet.photo.url }}"
+            alt = "{{ pet.name }}"
+            width = "200"
+        >
+    {% endif %}
+    <h3>Basic Information</h3>
+    <p>
+        <strong>Name:</strong>
+        {{ pet.name }}
+    </p>
+
+    <p>
+        <strong>Species:</strong>
+        {{ pet.get_species_display }}
+    </p>
+
+    <p>
+        <strong>Breed:</strong>
+        {{ pet.breed }}
+    </p>
+
+    <p>
+        <strong>Date of Birth</strong>
+        {{ pet.date_of_birth }}
+    </p>
+
+    <p>
+        <strong>Weight:</strong>
+        {{ pet.weight }} kg
+    </p>
+
+    <p>
+        <strong>Notes:</strong>
+        {{ pet.notes }}
+    </p>
+
+    <hr>
+    <h3>Medical Information</h3>
+    
+    <a href = "{% url 'add_vaccination' pet.id %}">
+        💉 Add Vaccination
+    <a>
+
+    <br><br>
+    <a href = "{% url 'add_medical_record' pet.id %}">
+        🩺 Add Medical Record
+    </a>
+    
+    <br><br>
+
+    <a href = "{% url 'add_prescription' pet.id %}">
+        💊 Add Prescription
+    </a>
+
+    <br><br>
+
+    <a href = "{% url 'add_appointment' pet.id %}">
+        📅 Add Appointment
+    </a>
+    
+    <h4>💉 Vaccination History</h4>
+    {% if vaccinations %}
+        {% for vaccination in vaccinations %}
+            <div>
+                <p>
+                    <strong>Vaccine:</strong>
+                    {{ vaccination.vaccine_name }}
+                </p>
+
+                <p>
+                    <strong>Date Given:</strong>
+                    {{ vaccination.date_given }}
+                </p>
+
+                <p>
+                    <strong>Next Due:</strong>
+                    {{ vaccination.next_due_date }}
+                </p>
+
+            {% if vaccination.status == 'overdue' %}
+
+                <p>
+                    🔴 <strong>OVERDUE</strong>
+                </p>
+
+            {% elif vaccination.status == 'upcoming' %}
+                <p>
+                    🟠 <strong>Due Soon</strong>
+                </p>
+
+            {% else %}
+                <p>
+                    🟢 <strong>Up to Date</strong>
+                </p>
+            {% endif %}
+
+                <p>
+                    <strong>Veterinarian:</strong>
+                    {{ vaccination.veterinarian }}
+                </p>
+
+                <p>
+                    <strong>Notes:</strong>
+                    {{ vaccination.notes }}
+                </p>
+                <hr>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No vaccination records available.</p>
+    {% endif %}
+    
+    <h4>🩺 Medical Record History</h4>
+    {% if medical_records %}
+            {% for record in medical_records %}
+                <div>
+                    <p>
+                        <strong>Date:</strong>
+                        {{ record.record_date }}
+                    </p>
+
+                    <p>
+                        <strong>Diagnosis:</strong>
+                        {{ record.diagnosis }}
+                    </p>
+
+                    <p>
+                        <strong>Symptoms:</strong>
+                        {{ record.symptoms }}
+                    </p>
+
+                    <p>
+                        <strong>Treatment:</strong>
+                        {{ record.treatment }}
+                    </p>
+
+                    <p>
+                        <strong>Veterinarian:</strong>
+                        {{ record.veterinarian }}
+                    </p>
+
+                    <p>
+                        <strong>Notes:</strong>
+                        {{ record.notes }}
+                    </p>
+
+                    <hr>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No medical records available.</p>
+        {% endif %} 
+
+    <h4>💊 Prescription History</h4>
+    {% if prescriptions %}
+        {% for prescription in prescriptions %}
+            <div>
+                <p>
+                    <strong>Medicine:</strong>
+                    {{ prescription.medicine_name }}
+                </p>
+
+                <p>
+                    <strong>Dosage:</strong>
+                    {{ prescription.dosage }}
+                </p>
+
+                <p>
+                    <strong>Frequency:</strong>
+                    {{ prescription.frequency }}
+                </p>
+
+                <p>
+                    <strong>Duration:</strong>
+                    {{ prescription.duration }}
+                </p>
+
+                <p>
+                    <strong>Prescribed Date:</strong>
+                    {{ prescription.prescribed_date }}
+                </p>
+
+                <p>
+                    <strong>Instructions:</strong>
+                    {{ prescription.instructions }}
+                </p>
+
+                <hr>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No prescriptions available.</p>
+    {% endif %}
+    
+    <h4>📅 Appointment History</h4>
+    {% if appointments %}
+        {% for appointment in appointments %}
+            <div>
+                <p>
+                    <strong>Date:</strong>
+                    {{ appointment.appointment_date }}
+                </p>
+
+                <p>
+                    <strong>Time:</strong>
+                    {{ appointment.appointment_time }}
+                </p>
+
+                <p>
+                    <strong>Veterinarian:</strong>
+                    {{ appointment.veterinarian }}
+                </p>
+
+                <p>
+                    <strong>Clinic</strong>
+                    {{ appointment.clinic }}
+                </p>
+
+                <p>
+                    <strong>Reason:</strong>
+                    {{ appointment.reason }}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    {{ appointment.get_status_display }}
+                </p>
+
+                <p>
+                    <strong>Notes:</strong>
+                    {{ appointment.notes }}
+                </p>
+
+                {% if appointment.status == 'scheduled' %}
+                    <br>
+
+                    <a href = "{% url 'cancel_appointment' appointment.id %}">
+                        ❌ Cancel Appointment
+                    </a>
+                {% endif %}
+
+                <hr>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No appointments available.</p>
+    {% endif %}
+
+    <br>
+    <a href = "{% url 'my_pets'  %}">
+        ← Back to My Pets
+    </a>
+</body>
+</html>

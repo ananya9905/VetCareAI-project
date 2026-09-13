@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>VetCareAI - Dashboard</title>
+</head>
+<body>
+    <h1>VetCareAI</h1>
+    <h2>Welcome to VetCareAI 🐾</h2>
+    <p>
+        Welcome, {{ request.user.username }}!
+    </p>
+    <hr>
+
+    <h2>🔔 Vaccination Reminder</h2>
+    {% if vaccination_reminders %}
+        {% for pet, vaccination in vaccination_reminders %}
+            <div>
+                <h3>🐾 {{ pet.name }}</h3>
+                <p>
+                    <strong>Vaccine:</strong>
+                    {{ vaccination.vaccine_name }}
+                </p>
+                
+                <p>
+                    <strong>Next Due:</strong>
+                    {{ vaccination.next_due_date }}
+                </p>
+
+                {% if vaccination.status == 'overdue' %}
+                    <p>
+                        🔴 <strong>OVERDUE</strong>
+                    </p>
+                {% else %}
+                    <p>
+                        🟠 <strong>DUE SOON</strong>
+                    </p>
+                {% endif %}
+                <a href = "{% url 'pet_detail' pet.id %}">
+                    View {{ pet.name}}'s Profile
+                </a>
+                <hr>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>
+            🟢 All vaccinations are up to date!
+        </p>
+    {% endif %}    
+
+    <h3>Pet Owner Dashboard</h3>
+    <ul>
+        <li>🐾 My Pets</li>
+        <li>📅 Appointments</li>
+        <li>💊 Prescriptions</li>
+        <li>💉 Vaccinations</li>
+        <li>🩺 Medical Records</li>
+        <li>🤖 AI Symptom Checker</li>
+        <li>👨‍⚕️ Find a Veterinarian</li>
+    </ul>
+    <br>
+    <a href = "{% url 'logout' %}">
+        Logout
+    </a>
+</body>
+</html>

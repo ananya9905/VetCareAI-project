@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Appointment</title>
+</head>
+
+<body>
+    <h1>📅 Add Appointment</h1>
+    <h2>Pet: {{pet.name}}</h2>
+    <form method = "POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type = "submit">
+            📅 Book Appointment
+        </button>
+    </form>
+    <br>
+
+    <a href = "{% url 'pet_detail' pet.id %}">
+        ← Back to {{ pet.name }}
+    </a>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>VetCareAI - My Pets</title>
+</head>
+
+<body>
+    <h1>VetCareAI 🐾</h1>
+    <h2>My Pets</h2>
+    <a href = "{% url 'add_pet' %}">
+        ➕ Add New Pet
+    </a>
+
+    <hr>
+    {% if pets %}
+        {% for pet in pets %}
+            <div>
+                {% if pet.photo %}
+                    <img
+                        src = "{{ pet.photo.url }}"
+                        alt = "{{ pet.name }}"
+                        width = "150"
+                    >
+                {% endif %}
+
+                <h3>{{ pet.name }}</h3>
+                <a href = "{% url 'pet_detail' pet.id %}">
+                    View Pet Profile
+                </a>
+                <p>
+                    Species: {{ pet.get_species_display }}
+                </p>
+
+                <p>
+                    Breed: {{ pet.breed }}
+                </p>
+
+                <p>
+                    Gender: {{ pet.get_gender_display }}
+                </p>
+
+                <p>
+                    Weight: {{ pet.weight }} kg
+                </p>
+                
+                <p>
+                    Notes: {{ pet.notes }}
+                </p>
+
+                <hr>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You haven't added any pets yet.</p>
+
+        <a href = "{% url 'add_pet' %}">
+            Add Your First Pet 🐶
+        </a>
+    {% endif %}
+    <br><br>
+
+    <a href = "{% url 'dashboard' %}">
+        ← Back to Dashboard
+    </a>
+</body>
+</html>

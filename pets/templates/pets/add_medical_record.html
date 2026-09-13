@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>VetCareAI - Add Medical Record</title>
+</head>
+
+<body>
+    <h1>VetCareAI 🐾</h1>
+    <h2>Add Medical Record for {{ pet.name }}</h2>
+
+    <form method = "POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type = "submit">
+            Save Medical Record
+        </button>
+    </form>
+
+    <br>
+    <a href = "{% url 'pet_detail' pet.id %}">
+        ← Back to {{ pet.name }}'s Profile
+    </a>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>VetCareAI - AI Symptom Checker</title>
+</head>
+
+<body>
+    <h1>VetCareAI 🐾</h1>
+
+    <h2>🤖 AI Symptom Checker</h2>
+
+    <p>
+        Describe your pet's symptoms and get an initial health assessment.
+    </p>
+
+    <form method = "POST">
+        {% csrf_token %}
+
+        <input type = "hidden" name = "stage" value = "questions">
+        <textarea name = "symptoms" rows = "5" cols = "60" required></textarea>
+        <br><br>
+        <button type = "submit">Analyze Symptoms</button>
+    </form>
+
+    {% if analysis %}
+        <hr>
+
+        <h3>🤖 AI Understanding</h3>
+        <p style = "white-space: pre-line;">
+            {{ analysis }}
+        </p>
+    {% endif %}
+
+    {% if questions %}
+        <h3>❓ Additional Questions</h3>
+
+        <form method = "POST">
+            {% csrf_token %}
+            <input type = "hidden" name = "stage" value = "assessment">
+
+            {% for question in questions %}
+                <p>
+                    <strong>
+                        {{ forloop.counter }}. {{ question }}
+                    </strong>
+                </p>
+
+                <textarea
+                    name = "answer_{{ forloop.counter }}"
+                    rows = "3"
+                    cols = "60"
+                    required
+                ></textarea>
+
+                <br><br>
+            {% endfor %}
+
+            <button type = "submit">
+                🚦 Continue to Risk Assessment
+            </button>
+        </form>
+    {% endif %}
+
+    {% if risk_level %}
+        <hr>
+        <h3>🚦 Risk Assessment Result</h3>
+        <p>
+            <strong>Risk Level:</strong>
+            {{ risk_level }}
+        </p>
+
+        <p>
+            <strong>Recommended Next Step:</strong>
+            {{ recommendation }}
+        </p>
+
+        <p>
+            ⚠️ This is only a basic screening prototype, not a veterinary diagnosis.
+            Contact a qualified veterinarian for proper medical advice.
+        </p>
+        
+        <a href = "{% url 'symptom_checker' %}">
+            Start New Assessment
+        </a>
+    {% endif %}
+</body>
+</html>

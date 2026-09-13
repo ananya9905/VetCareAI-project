@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VetCareAI - Registration</title>
+</head>
+
+<body>
+    <h1>VetCareAI</h1>
+    <h2>Create Pet Owner Account</h2>
+    <form method = "POST">
+        {%  csrf_token %}
+        {{ form.as_p }}
+        <button type = "submit">
+            Create Account
+        </button>
+    </form>
+</body>
+</html>

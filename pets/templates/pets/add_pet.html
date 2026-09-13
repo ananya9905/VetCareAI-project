@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>VetCareAI - Add Pet</title>
+</head>
+
+<body>
+    <h1>VetCareAI 🐾</h1>
+    <h2>Add Your Pet</h2>
+    <form method = "POST" enctype = "multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type = "submit">
+            Add Pet
+        </button>
+    </form>
+
+    <a href = "{% url 'my_pets' %}">
+        ← Back to My Pets
+    </a>
+</body>
+</html>
